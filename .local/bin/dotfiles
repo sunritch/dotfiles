@@ -1,0 +1,68 @@
+#!/bin/sh
+
+set -eu
+
+REPO="$HOME/dotfiles"
+
+FILES="
+.emacs.d/init.el
+.emacs.d/site-lisp
+.config/nvim
+.config/helix
+.local/bin/dotfiles
+.gitnore
+"
+
+die() {
+    printf '%s\n' "dotfiles: $*" >&2
+    exit 1
+}
+
+ensure_repo() {
+    [ -d "$REPO/.git" ] || die "not a git repository: $REPO"
+}
+
+update() {
+    ensure_repo
+
+    for file in $FILES; do
+        source="$HOME/$file"
+        target="$REPO/$file"
+
+        [ -e "$source" ] || die "missing: $source"
+
+        mkdir -p "$(dirname "$target")"
+        rm -rf "$target"
+        cp -R "$source" "$target"
+    done
+}
+
+install() {
+    ensure_repo
+
+    for file in $FILES; do
+        source="$REPO/$file"
+        target="$HOME/$file"
+
+        [ -e "$source" ] || die "missing in repository: $source"
+
+        mkdir -p "$(dirname "$target")"
+        rm -rf "$target"
+        cp -R "$source" "$target"
+    done
+}
+
+case "${1:-}" in
+    update)
+        update
+        ;;
+    install)
+        install
+        ;;
+    *)
+        printf '%s\n' \
+            "usage: dotfiles update" \
+            "       dotfiles install"
+        exit 1
+        ;;
+esac
