@@ -10,7 +10,10 @@ FILES="
 .config/nvim
 .config/helix
 .local/bin/dotfiles
+.vimrc
+.bashrc
 .gitnore
+dotfiles/README.org
 "
 
 die() {
