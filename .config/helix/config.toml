@@ -1,6 +1,5 @@
 [editor]
 line-number = "relative"
-auto-pairs = false
 
 [editor.cursor-shape]
 normal = "block"

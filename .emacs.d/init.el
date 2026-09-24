@@ -64,10 +64,8 @@
 (with-eval-after-load 'dired (require 'dired-x))
 (unless (display-graphic-p) (xterm-mouse-mode 1))
 (set-face-attribute 'default nil
-                    :background (if (display-graphic-p)
-                                    "#022" nil)
-                    :foreground (if (display-graphic-p)
-                                    "wheat" nil)
+                    ;:background (if (display-graphic-p) "#292b2e" nil)
+                    ;:foreground (if (display-graphic-p) "wheat" nil)
                     :family "juliamono")
 
 (dolist (pair '(("\\.cl\\'" . lisp-mode)

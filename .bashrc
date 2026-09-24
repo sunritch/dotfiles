@@ -124,3 +124,14 @@ fi
 # This section can be safely removed at any time if needed.
 test -r '/home/srq/.opam/opam-init/init.sh' && . '/home/srq/.opam/opam-init/init.sh' > /dev/null 2> /dev/null || true
 # END opam configuration
+
+## BRGIN plan9 config
+PLAN9=/usr/local/plan9
+export PLAN9
+PATH=$PATH:$PLAN9/bin
+export PATH
+## END plan9
+
+## BEGIN inferno-os config
+alias imk='/home/srq/inferno-os/bin/Linux/386/mk'
+## END inferno-os
