@@ -13,6 +13,7 @@ FILES="
 .vimrc
 .bashrc
 .gitnore
+remove-snap.sh
 dotfiles/README.org
 "
 

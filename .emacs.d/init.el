@@ -58,14 +58,16 @@
       save-interprogram-paste-before-kill 1
       kill-do-not-save-duplicates 1
       frame-inhibit-implied-resize 1
+      make-backup-files -1
+      auto-save-dafault -1
       dired-recursive-copies 'top
       dired-recursive-deletes 'top
       buffer-face-mode-face '(:family "Unifont" :height 120))
 (with-eval-after-load 'dired (require 'dired-x))
 (unless (display-graphic-p) (xterm-mouse-mode 1))
 (set-face-attribute 'default nil
-                    ;:background (if (display-graphic-p) "#292b2e" nil)
-                    ;:foreground (if (display-graphic-p) "wheat" nil)
+                    :background (if (display-graphic-p) "#292b2e" nil)
+                    :foreground (if (display-graphic-p) "wheat" nil)
                     :family "juliamono")
 
 (dolist (pair '(("\\.cl\\'" . lisp-mode)
