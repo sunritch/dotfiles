@@ -10,6 +10,7 @@ FILES="
 .config/nvim
 .config/helix
 dotfiles/dotfiles.sh
+.tmux.conf
 .vimrc
 .bashrc
 .gitnore
