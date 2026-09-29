@@ -11,11 +11,13 @@ FILES="
 .config/helix
 dotfiles/dotfiles.sh
 .tmux.conf
+.screenrc
+.Xresources
 .vimrc
 .bashrc
 .gitnore
 remove-snap.sh
-dotfiles/README.org
+dotfiles/README.txt
 "
 
 die() {

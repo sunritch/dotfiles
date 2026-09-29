@@ -1,4 +1,3 @@
-* dotfiles
 ** STEP 1
 cd dotfiles
 chmod +x ./dotfiles.sh

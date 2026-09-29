@@ -1,7 +1,3 @@
-" sensible.vim - Defaults everyone can agree on
-" Maintainer:   Tim Pope <http://tpo.pe/>
-" Version:      1.1
-
 if &compatible
   finish
 else
@@ -14,8 +10,6 @@ endif
 if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
-
-" Use :help 'option' to see the documentation for the given option.
 
 set autoindent
 set backspace=indent,eol,start

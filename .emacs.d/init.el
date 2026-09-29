@@ -46,25 +46,25 @@
 (save-place-mode 1)
 (electric-pair-mode 1)
 (tool-bar-mode -1)
-(ido-mode 1)
+(fido-mode 1)
 (auto-image-file-mode 1)
 (prefer-coding-system 'utf-8)
 (setq uniquify-buffer-name-style 'reverse
-      visible-bell 1
-      inhibit-startup-screen 1
-      enable-recursive-minibuffers 1
-      redisplay-skip-fontification-on-input 1
+      visible-bell t
+      inhibit-startup-screen t
+      enable-recursive-minibuffers t
+      redisplay-skip-fontification-on-input t
       jit-lock-defer-time 0.05
-      save-interprogram-paste-before-kill 1
-      kill-do-not-save-duplicates 1
-      frame-inhibit-implied-resize 1
-      make-backup-files -1
-      auto-save-dafault -1
+      save-interprogram-paste-before-kill t
+      kill-do-not-save-duplicates t
+      frame-inhibit-implied-resize t
+      make-backup-files nil
+      auto-save-dafault nil
       dired-recursive-copies 'top
       dired-recursive-deletes 'top
       buffer-face-mode-face '(:family "Unifont" :height 120))
 (with-eval-after-load 'dired (require 'dired-x))
-(unless (display-graphic-p) (xterm-mouse-mode 1))
+(unless (display-graphic-p) (xterm-mouse-mode t))
 (set-face-attribute 'default nil
                     :background (if (display-graphic-p) "#292b2e" nil)
                     :foreground (if (display-graphic-p) "wheat" nil)

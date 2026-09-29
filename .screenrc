@@ -1,0 +1,22 @@
+defutf8 on
+defencoding UTF-8
+encoding UTF-8
+term screen-256color
+
+autodetach on
+startup_message off
+deflogin on
+
+defscrollback 100000
+altscreen on
+#vbell off
+defflow off
+mousetrack on
+
+hardstatus alwayslastline
+hardstatus string '%{= kW}[ %{= gW}%S%{= kW} ] %-Lw%{= gW}%n%f %t%{-}%+Lw%<%=%{= kW}%Y-%m-%d %c'
+
+#multiuser on
+
+activity "activity in %t"
+bell_msg "bell in %t"
