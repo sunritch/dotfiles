@@ -66,7 +66,7 @@
 (with-eval-after-load 'dired (require 'dired-x))
 (unless (display-graphic-p) (xterm-mouse-mode t))
 (set-face-attribute 'default nil
-                    :background (if (display-graphic-p) "#292b2e" nil)
+                    :background (if (display-graphic-p) "grey15" nil)
                     :foreground (if (display-graphic-p) "wheat" nil)
                     :family "juliamono")
 
@@ -268,6 +268,7 @@ Only runs once per session; use `opam-switch-to' for later switch changes."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes nil)
  '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

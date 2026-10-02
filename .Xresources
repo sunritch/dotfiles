@@ -1,85 +1,85 @@
 ! xterm
 
-XTerm*background:        #002b36
-XTerm*foreground:        #839496
-XTerm*cursorColor:       #93a1a1
-XTerm*cursorBlink:       false
-XTerm*pointerColor:      #93a1a1
+XTerm*background: #282828
+XTerm*foreground: #ebdbb2
+XTerm*cursorColor: #fe8019
+XTerm*pointerColor: #93a1a1
 
-XTerm*color0:            #073642
-XTerm*color1:            #dc322f
-XTerm*color2:            #859900
-XTerm*color3:            #b58900
-XTerm*color4:            #268bd2
-XTerm*color5:            #d33682
-XTerm*color6:            #2aa198
-XTerm*color7:            #eee8d5
-XTerm*color8:            #002b36
-XTerm*color9:            #cb4b16
-XTerm*color10:           #586e75
-XTerm*color11:           #657b83
-XTerm*color12:           #839496
-XTerm*color13:           #6c71c4
-XTerm*color14:           #93a1a1
-XTerm*color15:           #fdf6e3
+XTerm*color0: #282828
+XTerm*color1: #cc241d
+XTerm*color2: #98971a
+XTerm*color3: #d79921
+XTerm*color4: #458588
+XTerm*color5: #b16286
+XTerm*color6: #689d6a
+XTerm*color7: #a89984
+XTerm*color8: #928374
+XTerm*color9: #fb4934
+XTerm*color10: #b8bb26
+XTerm*color11: #fabd2f
+XTerm*color12: #83a598
+XTerm*color13: #d3869b
+XTerm*color14: #8ec07c
+XTerm*color15: #ebdbb2
 
-XTerm*faceName:          unifont
-XTerm*faceSize:          14
-XTerm*renderFont:        true
-XTerm*utf8:              1
-XTerm*locale:            true
+XTerm*faceName: unifont
+XTerm*faceSize: 14
+XTerm*renderFont: true
+XTerm*utf8: 1
+XTerm*locale: true
 
-XTerm*saveLines:         5000
-XTerm*internalBorder:    8
-!XTerm*scrollBar:         false
-XTerm*metaSendsEscape:   true
+XTerm*saveLinks: 5000
+XTerm*internalBorder: 8
+!XTerm*scrollBar: false
+XTerm*metaSendsEscape: true
 
-XTerm*scrollTtyOutput:   false
-XTerm*scrollKey:         true
+XTerm*scrollTtyOutput: false
+XTerm*scrollKey: true
 
 XTerm*selectToClipboard: true
 
 ! urxvt
+URxvt*depth: 32
+URxvt*termName: rxvt-unicode
 
-URxvt*background:        #002b36
-URxvt*foreground:        #839496
-URxvt*cursorColor:       #93a1a1
-URxvt*cursorBlink:       false
-URxvt*pointerColor:      #93a1a1
-URxvt*pointerShape:      xterm
+URxvt*background: #282828
+URxvt*foreground: #ebdbb2
+URxvt*cursorColor: #fe8019
+URxvt*pointerColor: #93a1a1
+URxvt*pointerShape: xterm
 
-URxvt*color0:            #073642
-URxvt*color1:            #dc322f
-URxvt*color2:            #859900
-URxvt*color3:            #b58900
-URxvt*color4:            #268bd2
-URxvt*color5:            #d33682
-URxvt*color6:            #2aa198
-URxvt*color7:            #eee8d5
-URxvt*color8:            #002b36
-URxvt*color9:            #cb4b16
-URxvt*color10:           #586e75
-URxvt*color11:           #657b83
-URxvt*color12:           #839496
-URxvt*color13:           #6c71c4
-URxvt*color14:           #93a1a1
-URxvt*color15:           #fdf6e3
+URxvt*color0: #282828
+URxvt*color1: #cc241d
+URxvt*color2: #98971a
+URxvt*color3: #d79921
+URxvt*color4: #458588
+URxvt*color5: #b16286
+URxvt*color6: #689d6a
+URxvt*color7: #a89984
+URxvt*color8: #928374
+URxvt*color9: #fb4934
+URxvt*color10: #b8bb26
+URxvt*color11: #fabd2f
+URxvt*color12: #83a598
+URxvt*color13: #d3869b
+URxvt*color14: #8ec07c
+URxvt*color15: #ebdbb2
 
 URxvt*font: xft:unifont:pixelsize=16
 
-!URxvt*boldFont:       xft:dejavu sans mono:style=Bold:pixelsize=14
-!URxvt*italicFont:     xft:dejavu sans mono:style=Italic:pixelsize=14
+!URxvt*boldFont: xft:dejavu sans mono:style=Bold:pixelsize=14
+!URxvt*italicFont: xft:dejavu sans mono:style=Italic:pixelsize=14
 !URxvt*boldItalicFont: xft:dejavu sans mono:style=Bold Italic:pixelsize=14
 
-URxvt*internalBorder:    10
-URxvt*externalBorder:    2
-URxvt*saveLines:         5000
+URxvt*internalBorder: 10
+URxvt*externalBorder: 2
+URxvt*saveLines: 5000
 
-URxvt*scrollTtyOutput:   false
-URxvt*scrollWithBuffer:  true
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
 URxvt*scrollTtyKeypress: true
 
 !URxvt*transparent: true
-!URxvt*shading:     20
+!URxvt*shading: 20
 
 URxvt*selectToClipboard: true
