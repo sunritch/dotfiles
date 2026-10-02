@@ -55,6 +55,7 @@
 (prefer-coding-system 'utf-8)
 (setq uniquify-buffer-name-style 'reverse
       visible-bell t
+      inhibit-startup-screen t
       enable-recursive-minibuffers t
       redisplay-skip-fontification-on-input t
       jit-lock-defer-time 0.05

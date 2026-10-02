@@ -4,7 +4,6 @@ encoding UTF-8
 term screen-256color
 
 autodetach on
-startup_message off
 deflogin on
 
 defscrollback 100000
@@ -14,7 +13,7 @@ defflow off
 mousetrack on
 
 hardstatus alwayslastline
-hardstatus string '%{= kW}[ %{= gW}%S%{= kW} ] %-Lw%{= gW}%n%f %t%{-}%+Lw%<%=%{= kW}%Y-%m-%d %c'
+hardstatus string '%{= kW}[ %{= bW}%S%{= kW} ] %-Lw%{= bW}%n%f %t%{-}%+Lw%<%=%{= kW}%Y-%m-%d %c'
 
 #multiuser on
 
