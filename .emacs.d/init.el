@@ -37,8 +37,12 @@
     (package-ensure-refreshed)
     (mapc #'package-install missing)))
 
-(ensure-installed 'magit 'paredit 'yasnippet 'sly 'tuareg 'merlin 'haskell-mode
-                  'racket-mode 'geiser 'geiser-chez)
+(ensure-installed 'magit 'paredit 'yasnippet
+                  'sly                              ;; Common Lisp
+                  'tuareg 'merlin 'ocp-indent       ;; Ocaml
+                  'haskell-mode                     ;; Haskell
+                  'racket-mode 'geiser 'geiser-chez ;; Scheme
+                  )
 
 ;; enhance
 (setq-default indent-tabs-mode nil)
@@ -51,7 +55,6 @@
 (prefer-coding-system 'utf-8)
 (setq uniquify-buffer-name-style 'reverse
       visible-bell t
-      inhibit-startup-screen t
       enable-recursive-minibuffers t
       redisplay-skip-fontification-on-input t
       jit-lock-defer-time 0.05
@@ -143,7 +146,7 @@
 ;; Make sure we don't clash with SLIME when starting
 (add-hook 'lisp-mode-hook 'sly-mode)
 
-;; OCaml (tuareg + merlin + utop)
+;; OCaml (tuareg + merlin + utop + ocp-indent + ocp-index)
 ;; at any time via `M-x opam-switch-to` (not just at startup).
 (defvar opam-env-synced nil
   "Non-nil once the default opam switch's env has been applied at least once.")
@@ -222,14 +225,23 @@ Only runs once per session; use `opam-switch-to' for later switch changes."
 (autoload 'tuareg-mode     "tuareg" "OCaml mode."         t)
 (autoload 'merlin-mode     "merlin" "Merlin mode."         t)
 (autoload 'utop-minor-mode "utop"   "Minor mode for utop." t)
+(autoload 'ocp-setup-indent "ocp-indent"   "Improved indentation for Tuareg mode." t)
+
+;; ocp-index is not emacs package, you need install it through opam.
+(defun load-ocp-index ()
+  (when (locate-library "ocp-index")
+    (require 'ocp-index)
+    (ocp-index-mode 1)))
 
 ;; --- hooks: run in strict order so opam env is synced before anything
 ;; that depends on load-path/exec-path (merlin, utop) tries to load ---
 (defun tuareg-setup ()
   "Enable OCaml tooling for the current buffer, in dependency order."
-  (opam-ensure-env)     ; must run first — populates load-path/exec-path
+  (opam-ensure-env)    ; must run first — populates load-path/exec-path
   (merlin-mode 1)
-  (utop-minor-mode 1))
+  (utop-minor-mode 1)
+  (ocp-setup-indent)
+  (load-ocp-index))
 
 (add-hook 'tuareg-mode-hook #'tuareg-setup)
 
@@ -238,6 +250,11 @@ Only runs once per session; use `opam-switch-to' for later switch changes."
   (set-face-background 'merlin-type-face "skyblue")
   (define-key merlin-mode-map (kbd "C-c <up>")   #'merlin-type-enclosing-go-up)
   (define-key merlin-mode-map (kbd "C-c <down>") #'merlin-type-enclosing-go-down))
+
+(with-eval-after-load 'ocp-indent
+  (let ((ocp-indent-bin (executable-find "ocp-indent")))
+    (when ocp-indent-bin
+      (setq ocp-indent-path ocp-indent-bin))))
 
 (with-eval-after-load 'tuareg   
   (when (executable-find "ocamlformat")
