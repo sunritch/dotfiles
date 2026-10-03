@@ -62,11 +62,15 @@
       save-interprogram-paste-before-kill t
       kill-do-not-save-duplicates t
       frame-inhibit-implied-resize t
-      make-backup-files nil
-      auto-save-dafault nil
       dired-recursive-copies 'top
       dired-recursive-deletes 'top
-      buffer-face-mode-face '(:family "Unifont" :height 120))
+      buffer-face-mode-face '(:family "Unifont" :height 120)
+
+      backup-directory-alist
+      `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
+      auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "autosave/" user-emacs-directory) t))
+      )      
 (with-eval-after-load 'dired (require 'dired-x))
 (unless (display-graphic-p) (xterm-mouse-mode t))
 (set-face-attribute 'default nil
@@ -78,9 +82,9 @@
                 ("\\.mll\\'" . tuareg-mode)
                 ("\\.mly\\'" . tuareg-mode)
                 ("\\.lhs\\'" . haskell-mode)
-                ("\\.cabal\\'" . haskell-mode)
-                ("\\.agda\\'" . agda2-mode)
-                ("\\.lagda\\'" . agda2-mode)))
+                ("\\.cabal\\'" . haskell-cabal-mode)
+                ("\\.agda\\'" . load-agda2-mode)
+                ("\\.lagda\\'" . load-agda2-mode)))
   (add-to-list 'auto-mode-alist pair))
 
 ;; magit
@@ -91,7 +95,7 @@
 (autoload 'magit-file-dispatch "magit" "Magit file dispatch." t)
 (global-set-key (kbd "C-x g") 'magit-status)
 (with-eval-after-load 'magit
-  (setq magit-auto-select-connection 'always)
+  (setq magit-process-connection-type 'always)
   ;; other configs
 )
 
@@ -127,7 +131,7 @@
   (setq geiser-chez-binary "scheme"))
 
 (with-eval-after-load 'geiser-guile
-  (setq geiser-chez-binary "guile"))
+  (setq geiser-guile-binary "guile"))
 
 ;; common lisp
 (remove-hook 'lisp-mode-hook 'cl-lisp-mode-hook)
@@ -265,21 +269,39 @@ Only runs once per session; use `opam-switch-to' for later switch changes."
 (global-set-key (kbd "C-c o s") #'opam-switch-to)
 
 ;; haskell
-(autoload 'haskell-mode "haskell-mode" "Haskell mode.")
-(autoload 'haskell-cabal-mode "haskell-cabal" "Cabal mode.")
+(autoload 'haskell-mode "haskell-mode" "Haskell mode." t)
+(autoload 'haskell-cabal-mode "haskell-cabal" "Cabal mode." t)
 (autoload 'interactive-haskell-mode "haskell" "Interactive Haskell minor mode." t)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (with-eval-after-load 'haskell-mode
   (setq haskell-process-suggest-remove-import-lines t
         haskell-process-auto-import-loaded-modules t))
 ;; agda
-(autoload 'agda2-mode "agda2" "Agda mode." t)
-(with-eval-after-load 'agda2-mode
-  (load-file (let ((coding-system-for-read 'utf-8))
-               (shell-command-to-string "agda --emacs-mode locate")))
-  (require 'agda-input)
+(defun agda-mode-file ()
+  "Return the path to agda-mode.el reported by `agda-mode locate'."
+  (when-let ((exe (executable-find "agda-mode")))
+    (ignore-errors
+      (car (process-lines exe "locate")))))
+
+(defun load-agda2-mode ()
+  "Load Agda's Emacs mode on demand and enable it in the current buffer."
+  (interactive)
+  (unless (fboundp 'agda2-mode)
+    (let ((file (agda-mode-file)))
+      (unless (and file (file-readable-p file))
+        (user-error
+         "Cannot locate Agda Emacs mode; is agda-mode in PATH?"))
+      (load-file file)
+      (require 'agda-input nil t)))
+
   (setq agda2-program-name "agda"
-        agda2-highlight-level 'interactive))
+        agda2-highlight-level 'interactive)
+
+  (unless (derived-mode-p 'agda2-mode)
+    (agda2-mode)))
+
+;; ------------- site-lisp --------------;;
+(autoload 'color-mode "color-mode" "Colorize lines of file" t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
