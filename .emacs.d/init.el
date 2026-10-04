@@ -36,14 +36,12 @@
     (package-ensure-refreshed)
     (mapc #'package-install missing)))
 
-(defun install-packages ()
-  (interactive)
-  (ensure-installed 'magit 'paredit 'yasnippet
+(ensure-installed 'magit 'paredit 'yasnippet
                     'sly                              ;; Common Lisp
                     'tuareg 'merlin 'ocp-indent       ;; Ocaml
                     'haskell-mode                     ;; Haskell
                     'racket-mode 'geiser 'geiser-chez ;; Scheme
-                    ))
+                    )
 
 ;; enhance
 (setq-default indent-tabs-mode nil)
