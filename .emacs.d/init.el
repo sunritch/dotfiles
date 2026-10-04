@@ -37,12 +37,14 @@
     (package-ensure-refreshed)
     (mapc #'package-install missing)))
 
-(ensure-installed 'magit 'paredit 'yasnippet
-                  'sly                              ;; Common Lisp
-                  'tuareg 'merlin 'ocp-indent       ;; Ocaml
-                  'haskell-mode                     ;; Haskell
-                  'racket-mode 'geiser 'geiser-chez ;; Scheme
-                  )
+(defun install-packages ()
+  (interactive)
+  (ensure-installed 'magit 'paredit 'yasnippet
+                    'sly                              ;; Common Lisp
+                    'tuareg 'merlin 'ocp-indent       ;; Ocaml
+                    'haskell-mode                     ;; Haskell
+                    'racket-mode 'geiser 'geiser-chez ;; Scheme
+                    ))
 
 ;; enhance
 (setq-default indent-tabs-mode nil)
@@ -68,8 +70,6 @@
 
       backup-directory-alist
       `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
-      auto-save-file-name-transforms
-      `((".*" ,(expand-file-name "autosave/" user-emacs-directory) t))
       )      
 (with-eval-after-load 'dired (require 'dired-x))
 (unless (display-graphic-p) (xterm-mouse-mode t))
@@ -83,8 +83,7 @@
                 ("\\.mly\\'" . tuareg-mode)
                 ("\\.lhs\\'" . haskell-mode)
                 ("\\.cabal\\'" . haskell-cabal-mode)
-                ("\\.agda\\'" . load-agda2-mode)
-                ("\\.lagda\\'" . load-agda2-mode)))
+                ("\\.\\(l\\)?agda\\'" . load-agda2-mode)))
   (add-to-list 'auto-mode-alist pair))
 
 ;; magit
@@ -151,7 +150,7 @@
 ;; Make sure we don't clash with SLIME when starting
 (add-hook 'lisp-mode-hook 'sly-mode)
 
-;; OCaml (tuareg + merlin + utop + ocp-indent + ocp-index)
+;; OCaml (opam install utop ocp-index merlin) AI rewrite user-setup
 ;; at any time via `M-x opam-switch-to` (not just at startup).
 (defvar opam-env-synced nil
   "Non-nil once the default opam switch's env has been applied at least once.")
@@ -226,11 +225,10 @@ Only runs once per session; use `opam-switch-to' for later switch changes."
     (opam-sync-share-path)
     (setq opam-env-synced t)))
 
-;; --- autoloads: nothing here loads until an .ml/.mli file is opened ---
 (autoload 'tuareg-mode     "tuareg" "OCaml mode."         t)
 (autoload 'merlin-mode     "merlin" "Merlin mode."         t)
 (autoload 'utop-minor-mode "utop"   "Minor mode for utop." t)
-(autoload 'ocp-setup-indent "ocp-indent"   "Improved indentation for Tuareg mode." t)
+(autoload 'ocp-setup-indent "ocp-indent"   "Indentation for Tuareg mode." t)
 
 ;; ocp-index is not emacs package, you need install it through opam.
 (defun load-ocp-index ()
@@ -238,8 +236,8 @@ Only runs once per session; use `opam-switch-to' for later switch changes."
     (require 'ocp-index)
     (ocp-index-mode 1)))
 
-;; --- hooks: run in strict order so opam env is synced before anything
-;; that depends on load-path/exec-path (merlin, utop) tries to load ---
+;; hooks: run in strict order so opam env is synced before anything
+;; that depends on load-path/exec-path (merlin, utop) tries to load
 (defun tuareg-setup ()
   "Enable OCaml tooling for the current buffer, in dependency order."
   (opam-ensure-env)    ; must run first — populates load-path/exec-path
@@ -252,7 +250,7 @@ Only runs once per session; use `opam-switch-to' for later switch changes."
 
 (with-eval-after-load 'merlin
   (setq merlin-error-after-save nil)  ; check on demand, not on every save
-  (set-face-background 'merlin-type-face "skyblue")
+  (set-face-attribute 'merlin-type-face nil :inherit 'font-lock-type-face)
   (define-key merlin-mode-map (kbd "C-c <up>")   #'merlin-type-enclosing-go-up)
   (define-key merlin-mode-map (kbd "C-c <down>") #'merlin-type-enclosing-go-down))
 
@@ -280,8 +278,7 @@ Only runs once per session; use `opam-switch-to' for later switch changes."
 (defun agda-mode-file ()
   "Return the path to agda-mode.el reported by `agda-mode locate'."
   (when-let ((exe (executable-find "agda-mode")))
-    (ignore-errors
-      (car (process-lines exe "locate")))))
+    (car (process-lines exe "locate"))))
 
 (defun load-agda2-mode ()
   "Load Agda's Emacs mode on demand and enable it in the current buffer."
