@@ -125,6 +125,12 @@ fi
 test -r '/home/srq/.opam/opam-init/init.sh' && . '/home/srq/.opam/opam-init/init.sh' > /dev/null 2> /dev/null || true
 # END opam configuration
 
+## BEGIN mesa and vulkan-dzn config
+export GALLIUM_DRIVER=d3d12
+export LIBVA_DRIVER_NAME=d3d12
+## END
+
+
 ## BRGIN plan9 config
 PLAN9=/usr/local/plan9
 export PLAN9
