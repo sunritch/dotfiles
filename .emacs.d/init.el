@@ -37,11 +37,11 @@
     (mapc #'package-install missing)))
 
 (ensure-installed 'magit 'paredit 'yasnippet
-                    'sly                              ;; Common Lisp
-                    'tuareg 'merlin 'ocp-indent       ;; Ocaml
-                    'haskell-mode                     ;; Haskell
-                    'racket-mode 'geiser 'geiser-chez ;; Scheme
-                    )
+                  'sly                              ;; Common Lisp
+                  'tuareg 'merlin 'ocp-indent       ;; Ocaml
+                  'haskell-mode                     ;; Haskell
+                  'racket-mode 'geiser 'geiser-chez ;; Scheme
+                  )
 
 ;; enhance
 (setq-default indent-tabs-mode nil)
@@ -63,7 +63,6 @@
       frame-inhibit-implied-resize t
       dired-recursive-copies 'top
       dired-recursive-deletes 'top
-      buffer-face-mode-face '(:family "Unifont" :height 120)
 
       backup-directory-alist
       `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
