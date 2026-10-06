@@ -115,14 +115,14 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
+shopt -s cdspell dirspell progcomp
 
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:
 #   - the correct directories to the PATH
 #   - auto-completion for the opam binary
 # This section can be safely removed at any time if needed.
-test -r '/home/srq/.opam/opam-init/init.sh' && . '/home/srq/.opam/opam-init/init.sh' > /dev/null 2> /dev/null || true
+test -r '~/.opam/opam-init/init.sh' && . '~/.opam/opam-init/init.sh' > /dev/null 2> /dev/null || true
 # END opam configuration
 
 ## BEGIN mesa and vulkan-dzn config
@@ -137,7 +137,3 @@ export PLAN9
 PATH=$PATH:$PLAN9/bin
 export PATH
 ## END plan9
-
-## BEGIN inferno-os config
-alias imk='/home/srq/inferno-os/bin/Linux/386/mk'
-## END inferno-os

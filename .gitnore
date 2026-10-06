@@ -1,11 +1,3 @@
-!config/
-!config/**
-!.emacd.d/
-!.emacs.d/**
-!.tmux.conf
-!.vimrc
-!.gitnore
-
 *~
 \#*\#
 .\#*
