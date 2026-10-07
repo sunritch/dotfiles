@@ -2,6 +2,4 @@ theme = "gruvbox"
 
 [editor]
 line-number = "relative"
-color-mode = true
-bufferline = "multiple"
-rulers = [80]
+

@@ -2,13 +2,14 @@ defutf8 on
 defencoding UTF-8
 encoding UTF-8
 term screen-256color
+truecolor on
 
 autodetach on
 deflogin on
 
 defscrollback 100000
 altscreen on
-#vbell off
+vbell off
 defflow off
 mousetrack on
 

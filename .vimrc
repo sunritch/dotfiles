@@ -1,40 +1,26 @@
-if &compatible
-  finish
-else
-  let g:loaded_sensible = 1
-endif
-
 filetype plugin indent on
 syntax enable
-
 set autoindent
 set backspace=indent,eol,start
-set complete-=i
 set smarttab
 set nrformats-=octal
-set ruler
 set wildmenu
-set clipboard^=unnamed,unnamedplus
-
-if &encoding ==# 'latin1' && has('gui_running')
-  set encoding=utf-8
-endif
-
-if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-endif
-
-set formatoptions+=j
-setglobal tags-=./tags tags^=./tags;
+set wildmode=longest:full,full
+set encoding=utf-8
 set autoread
-set fileformats+=mac
 set history=1000
 set tabpagemax=50
-set viminfo^=!
 set sessionoptions-=options
 set expandtab
+set smartindent
 set shiftround
 set showmatch
+set ignorecase
+set incsearch
+set smartcase
+set diffopt+=iwhite,algorithm:histogram,indent-heuristic
+set completeopt=menuone,noinsert,noselect
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set mouse=a
 
 " Allow color schemes to do bright colors without forcing bold.
