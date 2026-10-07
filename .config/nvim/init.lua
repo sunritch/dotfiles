@@ -13,10 +13,6 @@ opt.undofile = true
 opt.splitright = true
 opt.splitbelow = true
 opt.completeopt = { "menu", "menuone", "noselect" }
-opt.pumheight = 12
-opt.signcolumn  = "yes"
-opt.updatetime = 300
-opt.timeoutlen = 500
 
 opt.path:append("**")
 opt.wildmode = { "longest", "full" }

@@ -4,43 +4,19 @@ else
   let g:loaded_sensible = 1
 endif
 
-if has('autocmd')
-  filetype plugin indent on
-endif
-if has('syntax') && !exists('g:syntax_on')
-  syntax enable
-endif
+filetype plugin indent on
+syntax enable
 
 set autoindent
 set backspace=indent,eol,start
 set complete-=i
 set smarttab
-
 set nrformats-=octal
-
 set ttimeout
 set ttimeoutlen=100
-
-set incsearch
-" Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
-endif
-
-set laststatus=2
 set ruler
-set showcmd
 set wildmenu
-
 set clipboard^=unnamed,unnamedplus
-
-if !&scrolloff
-  set scrolloff=1
-endif
-if !&sidescrolloff
-  set sidescrolloff=5
-endif
-set display+=lastline
 
 if &encoding ==# 'latin1' && has('gui_running')
   set encoding=utf-8
@@ -50,31 +26,23 @@ if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
 
-if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j " Delete comment character when joining commented lines
-endif
-
-if has('path_extra')
-  setglobal tags-=./tags tags^=./tags;
-endif
-
-if &shell =~# 'fish$'
-  set shell=/bin/bash
-endif
-
+set formatoptions+=j
+setglobal tags-=./tags tags^=./tags;
 set autoread
 set fileformats+=mac
-
-if &history < 1000
-  set history=1000
-endif
-if &tabpagemax < 50
-  set tabpagemax=50
-endif
-if !empty(&viminfo)
-  set viminfo^=!
-endif
+set history=1000
+set tabpagemax=50
+set viminfo^=!
 set sessionoptions-=options
+
+set hlsearch on
+set ignorecase on
+set smartcase on
+set expandtab on
+set shiftround
+set showmatch
+set termguicolors
+set mouse=a
 
 " Allow color schemes to do bright colors without forcing bold.
 if &t_Co == 8 && $TERM !~# '^linux'
@@ -87,7 +55,7 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
 endif
 
 inoremap <C-U> <C-G>u<C-U>
-" ## added by OPAM user-setup for vim / base ## d611dd144a5764d46fdea4c0c2e0ba07 ## you can edit, but keep this line
+" ## added by OPAM user-setup for vim / base ##
 let s:opam_share_dir = system("opam var share")
 let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
 
@@ -118,9 +86,9 @@ for tool in s:opam_packages
     call s:opam_configuration[tool]()
   endif
 endfor
-" ## end of OPAM user-setup addition for vim / base ## keep this line
-" ## added by OPAM user-setup for vim / ocp-indent ## ed92ea67c3136ab2577283817ed3a769 ## you can edit, but keep this line
+" ## end of OPAM user-setup addition for vim / base ##
+" ## added by OPAM user-setup for vim / ocp-indent ##
 if count(s:opam_available_tools,"ocp-indent") == 0
   source "~/.opam/default/share/ocp-indent/vim/indent/ocaml.vim"
 endif
-" ## end of OPAM user-setup addition for vim / ocp-indent ## keep this line
+" ## end of OPAM user-setup addition for vim / ocp-indent ##
