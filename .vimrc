@@ -12,8 +12,6 @@ set backspace=indent,eol,start
 set complete-=i
 set smarttab
 set nrformats-=octal
-set ttimeout
-set ttimeoutlen=100
 set ruler
 set wildmenu
 set clipboard^=unnamed,unnamedplus
@@ -34,14 +32,9 @@ set history=1000
 set tabpagemax=50
 set viminfo^=!
 set sessionoptions-=options
-
-set hlsearch on
-set ignorecase on
-set smartcase on
-set expandtab on
+set expandtab
 set shiftround
 set showmatch
-set termguicolors
 set mouse=a
 
 " Allow color schemes to do bright colors without forcing bold.
