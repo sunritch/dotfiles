@@ -9,6 +9,8 @@ FILES='
 .emacs.d/site-lisp
 .config/nvim
 .config/helix
+.config/alacritty
+.config/wezterm
 .vimrc
 .bashrc
 .tmux.conf

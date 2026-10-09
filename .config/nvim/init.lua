@@ -5,6 +5,8 @@ vim.opt.smarttab = true
 vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 vim.opt.nrformats = 'octal'
 vim.opt.diffopt:append('iwhite')
 vim.opt.diffopt:append('algorithm:histogram')
@@ -58,8 +60,28 @@ require("lazy").setup({
             "Julian/lean.nvim",
             ft="lean",
             dependencies={
+                "nvim-lua/plenary.nvim",
             },
-            opts={},
+            opts={
+                mappings=true,
+            },
+        },
+        {
+            "MeanderingProgrammer/render-markdown.nvim",
+            ft="markdown",
+            dependencies={
+                "nvim-treesitter/nvim-treesitter",
+            },
+            opts={
+                enabled=false,
+                render_modes={"n","c"},
+            },
+            keys={
+                "<leader>mp",
+                "<cmd>RenderMarkdowm toggle<cr>",
+                ft="markdown",
+                desc="Toggle Markdown preview",
+            },
         },
     },
 })

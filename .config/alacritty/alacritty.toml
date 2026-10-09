@@ -1,0 +1,24 @@
+[scrolling]
+history = 20000
+
+[font]
+builtin_box_drawing = true
+
+[selection]
+save_to_clipboard = true
+
+[terminal]
+osc52 = "CopyPaste"
+
+[mouse]
+hide_when_typing = true
+
+[[keyboard.bindings]]
+key = "t"
+mods = "Control|Shift"
+chars = "tmux new-session -A -s work\n"
+
+[[keyboard.bindings]]
+key = "Enter"
+mods = "Control|Shift"
+action = "SpawnNewInstance"

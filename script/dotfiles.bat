@@ -11,7 +11,13 @@ if defined DOTFILES_REPO (
 )
 
 set "HOME_DIR=%USERPROFILE%"
-set "FILES=.emacs.d/init.el .emacs.d/site-lisp .config/nvim .config/helix .vimrc"
+set "FILES=^
+.emacs.d/init.el .emacs.d/site-lisp ^
+.config/nvim ^
+.config/helix ^
+.config/alacritty ^
+.config/wezterm ^
+.vimrc"
 
 set "CONFLICTS=0"
 set "NOT_OK=0"

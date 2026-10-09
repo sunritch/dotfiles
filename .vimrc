@@ -23,15 +23,7 @@ set completeopt=menuone,noinsert,noselect
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set mouse=a
 
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^linux'
-  set t_Co=16
-endif
-
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
-endif
+runtime! macros/matchit.vim
 
 inoremap <C-U> <C-G>u<C-U>
 " ## added by OPAM user-setup for vim / base ##
