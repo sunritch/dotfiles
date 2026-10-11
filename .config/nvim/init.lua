@@ -5,8 +5,6 @@ vim.opt.smarttab = true
 vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 vim.opt.nrformats = 'octal'
 vim.opt.diffopt:append('iwhite')
 vim.opt.diffopt:append('algorithm:histogram')

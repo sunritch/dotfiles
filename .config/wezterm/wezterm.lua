@@ -24,11 +24,9 @@ config.set_environment_variables = {
     prompt = '$E]7;file://localhost/$P$E\\$E[32m$T$E[0m $E[35m$P$E[36m$_$G$E[0m ',
 }
 
-local function is_found(str, pattern)
-    return string.find(str, pattern) ~= nil
-end
-local is_linux  = is_found(wezterm.target_triple, 'linux')
-local is_mac = is_found(wezterm.target_triple, 'apple')
+local is_linux = wezterm.target_triple:find('linux')~=nil
+local is_win = wezterm.target_triple:find('windows')~=nil
+local is_mac = wezterm.target_triple:find('apple%-darwin')~=nil
 --- launch
 local launch_menu = {}
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
