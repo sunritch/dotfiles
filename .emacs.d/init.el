@@ -5,12 +5,13 @@
 	    (setq gc-cons-threshold (* 16 1024 1024)
 		  gc-cons-percentage 0.1)))
 
-;; enhance
+;;; enhance
 (require 'cl-lib)
-(require 'subr-x)
 (setq-default indent-tabs-mode nil)
 (recentf-mode 1)
 (save-place-mode 1)
+(global-auto-revert-mode 1)
+(delete-selection-mode 1)
 (electric-pair-mode 1)
 (tool-bar-mode -1)
 (fido-mode 1)
@@ -44,12 +45,14 @@
        (expand-file-name "site-lisp" user-emacs-directory)))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; package
+;;; package
 (require 'package)
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/packages/")
         ("gnu" . "https://elpa.gnu.org/packages/")))
+(package-initialize)
+
 (defun ensure-installed (&rest packages)
   (let (refreshed)
     (dolist (p packages)
@@ -66,16 +69,15 @@
                   'geiser-guile                 ;; Scheme
                   )
 
-;; envrc
-(add-hook 'after-init-hook (lambda () (envrc-global-mode 1)))
+;;; envrc
+(add-hook 'after-init-hook #'envrc-global-mode)
 
-;; magit
+;;; magit
 (autoload 'magit-status "magit" "Magit status." t)
-(global-set-key (kbd "C-x g") 'magit-status)
 (with-eval-after-load 'magit
   (setq magit-process-connection-type 'always))
 
-;; paredit
+;;; paredit
 (dolist (hook '(lisp-mode-hook
                 lisp-interaction-mode-hook
                 emacs-lisp-mode-hook
@@ -84,7 +86,7 @@
                 eval-expression-minibuffer-setup-hook))
   (add-hook hook #'enable-paredit-mode))
 
-;; scheme
+;;; scheme
 (autoload 'geiser-mode "geiser-mode" "Geiser mode." t)
 (autoload 'racket-mode "racket-mode" "Racket mode." t)
 
@@ -96,9 +98,7 @@
         geiser-chez-binary "scheme"
         geiser-guile-binary "guile"))
 
-(add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
-
-;; common lisp
+;;; common lisp
 (autoload 'sly "sly" "Start SLY" t)
 (autoload 'sly-mode "sly" "SLY mode" t)
 
@@ -120,11 +120,10 @@
           (nreverse impls))))
 ;; Don't turn on paredit in REPL, but at least use electric-pair-mode
 (add-hook 'sly-mrepl-mode-hook 'electric-pair-local-mode)
-;; Make sure we don't clash with SLIME when starting
 (add-hook 'lisp-mode-hook 'sly-mode)
 (add-to-list 'auto-mode-alist '("\\.cl\\'" . lisp-mode))
 
-;; OCaml (opam install utop merlin tuareg)
+;;; OCaml (opam install utop merlin tuareg)
 ;; Switch projects outside Emacs using direnv, then restart Emacs.
 (let* ((prefix (getenv "OPAM_SWITCH_PREFIX"))
        (share (if prefix
@@ -151,7 +150,7 @@
 (add-hook 'tuareg-mode-hook #'ocaml-setup)
 (add-to-list 'auto-mode-alist '("\\.ml[ily]?\\'" . tuareg-mode))
 
-;; haskell
+;;; haskell
 (autoload 'haskell-mode "haskell-mode" "Haskell mode." t)
 (autoload 'haskell-cabal-mode "haskell-cabal" "Cabal mode." t)
 (autoload 'interactive-haskell-mode "haskell" "Interactive Haskell minor mode." t)
@@ -159,11 +158,8 @@
 (with-eval-after-load 'haskell-mode
   (setq haskell-process-suggest-remove-import-lines t
         haskell-process-auto-import-loaded-modules t))
-(add-to-list 'auto-mode-alist '("\\.lhs\\'" . haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.cabal\\'" . haskell-cabal-mode))
 
-;; agda
+;;; agda
 (defun load-agda2-mode ()
   (interactive)
   (unless (fboundp 'agda2-mode)

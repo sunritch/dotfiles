@@ -18,9 +18,18 @@ vim.opt.wildignore:append({
   "*.min.js","*.swp","*.o","vendor","dist","_site",
 })
 
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+--- key bindings ---
+vim.keymap.set("n","<leader>e","<cmd>Lexplore<CR>",{
+        desc = "Toggle Netrw Explorer"})
+
 vim.diagnostic.config({
   virtual_text = { spacing = 2 },
-  severity_sort    = true,
+  severity_sort = true,
   float = {
     border = "rounded",
     source = "always",
@@ -44,12 +53,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
-
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -75,10 +78,10 @@ require("lazy").setup({
                 render_modes={"n","c"},
             },
             keys={
-                "<leader>mp",
-                "<cmd>RenderMarkdowm toggle<cr>",
-                ft="markdown",
-                desc="Toggle Markdown preview",
+                {"<leader>mp",
+                 "<cmd>RenderMarkdown toggle<cr>",
+                 ft="markdown",
+                 desc="Toggle Markdown preview"},
             },
         },
     },
