@@ -1,0 +1,23 @@
+shell -$SHELL
+defutf8 on
+defencoding UTF-8
+encoding UTF-8
+term screen-256color
+defbce on
+#truecolor on
+
+autodetach on
+deflogin on
+defnonblock 5
+defscrollback 100000
+altscreen on
+vbell off
+defflow off
+mousetrack on
+#multiuser on
+activity "activity in %t"
+bell_msg "bell in %t"
+
+hardstatus alwayslastline
+backtick 1 3600 3600 sh -c 'case $(uname -n) in prod|prod[-._0-9]*|*[-._]prod|*[-._]prod[-._0-9]*) echo PROD;; esac'
+hardstatus string '%? %1` %? %H %= %?%-Lw%?[%n%f %t]%?%+Lw%? %= %l %Y-%m-%d %c'

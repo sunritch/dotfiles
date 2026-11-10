@@ -1,0 +1,18 @@
+# minimal POSIX interactive configuration
+case $- in
+    *i*) ;;
+    *) return ;;
+esac
+
+[ "$(id -u)" = 0 ] && return
+
+HOSTNAME=$(uname -n)   # never trust an inherited value: it decides the PROD marker
+PS1='$ '
+
+[ -n "${SSH_CONNECTION-}" ] && PS1='${HOSTNAME%%.*}:'$PS1
+_h=$HOSTNAME
+[ -f /etc/prod-host ] && _h=prod
+case $_h in
+    prod|prod[-._0-9]*|*[-._]prod|*[-._]prod[-._0-9]*) PS1="PROD $PS1" HISTFILE=/dev/null ;;
+esac
+unset _h

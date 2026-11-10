@@ -1,0 +1,37 @@
+[user]
+	email = 161911608+sunritch@users.noreply.github.com
+	name = sunritch
+[pull]
+	rebase = false
+[column]
+	ui = auto
+[core]
+	autocrlf = input
+[init]
+	defaultBranch = main
+[push]
+	autoSetupRemote = true
+[fetch]
+	prune = true
+[transfer]
+	fsckObjects = true
+	credentialsInUrl = die
+[url "https://github.com/"]
+	insteadOf = git://github.com/
+[merge]
+	conflictStyle = zdiff3
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+[rebase]
+	autoStash = true
+[rerere]
+	enabled = true
+[alias]
+	st = status -sb
+	lg = log --graph --oneline --decorate
+	br = branch
+	ci = commit
+	co = checkout
+	sync-el = "!git submodule foreach --quiet 'case \"$sm_path\" in .emacs.d/site-lisp/*) git sparse-checkout set --no-cone \"*.el\" ;; esac'"
