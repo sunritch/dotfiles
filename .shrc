@@ -4,15 +4,17 @@ case $- in
     *) return ;;
 esac
 
-[ "$(id -u)" = 0 ] && return
+if [ "$(id -u)" = 0 ]; then return; fi
 
-HOSTNAME=$(uname -n)   # never trust an inherited value: it decides the PROD marker
+# environment normally comes from ~/.profile; detect it now if this shell never saw it
+if [ -z "${DOTFILES_ENV+x}" ] && [ -r "$HOME/.profile" ]; then
+    . "$HOME/.profile"
+fi
+
+HOSTNAME=$(uname -n)
 PS1='$ '
-
-[ -n "${SSH_CONNECTION-}" ] && PS1='${HOSTNAME%%.*}:'$PS1
-_h=$HOSTNAME
-[ -f /etc/prod-host ] && _h=prod
-case $_h in
-    prod|prod[-._0-9]*|*[-._]prod|*[-._]prod[-._0-9]*) PS1="PROD $PS1" HISTFILE=/dev/null ;;
+if [ -n "${SSH_CONNECTION-}" ]; then PS1='${HOSTNAME%%.*}:'$PS1; fi
+case ${DOTFILES_ENV-} in
+    prod) PS1="PROD $PS1" ;;
+    staging) PS1="STG $PS1" ;;
 esac
-unset _h

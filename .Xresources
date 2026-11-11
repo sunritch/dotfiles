@@ -80,8 +80,6 @@ URxvt.scrollWithBuffer: true
 URxvt.scrollTtyKeypress: true
 URxvt.secondaryScroll: false
 URxvt.scrollstyle: rxvt
-! Remove this line if you want printing/export support.
-URxvt.print-pipe: cat > /dev/null
 
 ! Perl extensions
 URxvt.perl-ext-common: default,eval,matcher,tabbed,readline,confirm-paste,selection-to-clipboard,searchable-scrollback

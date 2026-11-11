@@ -6,7 +6,6 @@
 .env.*
 *.pem
 *.key
-id_*
 .netrc
 .authinfo*
 .npmrc

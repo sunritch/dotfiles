@@ -1,54 +1,44 @@
-# minimal POSIX login fallback
-case $(umask) in
-    0022|022) umask 027 ;;
-esac
+# minimal POSIX login configuration
+umask g-w,o-rwx
 
-# Drop empty and "." PATH entries
-_o=$IFS
-IFS=:
-set -f
-_p=
-for d in ${PATH:-/usr/bin:/bin}; do
-    case $d in
-        ''|.) ;;
-        *) _p=${_p:+$_p:}$d ;;
-    esac
-done
-set +f
-IFS=$_o
-PATH=${_p:-/usr/bin:/bin}
-
+# an empty PATH would make the uname lookup below fail, silently turning production protections off
+PATH=${PATH:-/usr/bin:/bin}
 for d in "$HOME/bin" "$HOME/.local/bin"; do
-    [ -d "$d" ] || continue
-    case ":$PATH:" in
-        *":$d:"*) ;;
-        *) PATH=$PATH:$d ;;
-    esac
+    if [ -d "$d" ]; then
+        case :$PATH: in
+            *:"$d":*) ;;
+            *) PATH=$PATH:$d ;;
+        esac
+    fi
 done
-export PATH
+export PATH LESS="${LESS:-FRX}"
 
-LESS=${LESS:-FRX}
-export LESS
-
-# Production host
+# environment: prod, staging or dev
 _h=$(uname -n)
-[ -f /etc/prod-host ] && _h=prod
+if [ -f /etc/prod-host ]; then
+    _h=prod
+elif [ -f /etc/staging-host ]; then
+    _h=staging
+fi
 case $_h in
-    prod|prod[-._0-9]*|*[-._]prod|*[-._]prod[-._0-9]*)
-        # no pager/client history files: they keep typed searches and SQL in plaintext
-        LESSSECURE=1 LESSHISTFILE=- MYSQL_HISTFILE=/dev/null PSQL_HISTORY=/dev/null
-        export LESSSECURE LESSHISTFILE MYSQL_HISTFILE PSQL_HISTORY
-        # no core dumps: they contain secrets from memory
-        # shellcheck disable=SC3045
-        ulimit -c 0 2>/dev/null
-        ;;
+    prod|prod[-._0-9]*|*[-._]prod|*[-._]prod[-._0-9]*) DOTFILES_ENV=prod ;;
+    stg|stg[-._0-9]*|*[-._]stg|*[-._]stg[-._0-9]*) DOTFILES_ENV=staging ;;
+    staging|staging[-._0-9]*|*[-._]staging|*[-._]staging[-._0-9]*) DOTFILES_ENV=staging ;;
+    *) DOTFILES_ENV=dev ;;
 esac
-
-# Interactive shell configuration
-if [ -r "$HOME/.shrc" ] &&
-   { [ -z "${ENV-}" ] || [ ! -r "$ENV" ]; }; then
-    ENV=$HOME/.shrc
-    export ENV
+export DOTFILES_ENV
+# hardening applies to prod only; staging just gets its label
+if [ "$DOTFILES_ENV" = prod ]; then
+    # no pager/client history files
+    export LESSSECURE=1 LESSHISTFILE=- MYSQL_HISTFILE=/dev/null PSQL_HISTORY=/dev/null
+    # no core dumps: soft limit only, so it can be raised for debugging
+    # shellcheck disable=SC3045
+    ulimit -Sc 0 2>/dev/null
 fi
 
-unset d _h _o _p
+# interactive shell configuration for POSIX sh
+if [ -r "$HOME/.shrc" ] && { [ -z "${ENV-}" ] || [ ! -r "$ENV" ]; }; then
+    export ENV="$HOME/.shrc"
+fi
+
+unset d _h

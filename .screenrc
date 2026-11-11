@@ -19,5 +19,5 @@ activity "activity in %t"
 bell_msg "bell in %t"
 
 hardstatus alwayslastline
-backtick 1 3600 3600 sh -c 'case $(uname -n) in prod|prod[-._0-9]*|*[-._]prod|*[-._]prod[-._0-9]*) echo PROD;; esac'
+backtick 1 3600 3600 sh -c '. "$HOME/.profile"; case $DOTFILES_ENV in prod) echo PROD;; staging) echo STG;; esac'
 hardstatus string '%? %1` %? %H %= %?%-Lw%?[%n%f %t]%?%+Lw%? %= %l %Y-%m-%d %c'

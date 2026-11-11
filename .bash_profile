@@ -1,8 +1,3 @@
 # Bash login configuration
-[ -r "$HOME/.profile" ] && . "$HOME/.profile"
-
-case $- in
-    *i*)
-        [ -r "$HOME/.bashrc" ] && . "$HOME/.bashrc"
-        ;;
-esac
+if [ -r "$HOME/.profile" ]; then . "$HOME/.profile"; fi
+if [ -r "$HOME/.bashrc" ]; then . "$HOME/.bashrc"; fi
