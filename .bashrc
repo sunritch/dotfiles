@@ -8,9 +8,13 @@ esac
 
 # environment normally comes from ~/.profile; detect it now if this shell never saw it
 if [ -z "${DOTFILES_ENV+x}" ] && [ -r "$HOME/.profile" ]; then
+    DOTFILES_ENV=   # already set while .profile runs, so a .profile that sources ~/.bashrc (Debian's default) cannot loop back here
     . "$HOME/.profile"
 fi
-
+if [ -z "${DOTFILES_ENV-}" ]; then
+    echo "bashrc: ~/.profile did not set DOTFILES_ENV; assuming dev" >&2
+    DOTFILES_ENV=dev
+fi
 # never record lines that look like they carry secrets (assignments and --password flags)
 HISTIGNORE='*[Pp][Aa][Ss][Ss][Ww]*=*:*[Tt][Oo][Kk][Ee][Nn]*=*:*[Ss][Ee][Cc][Rr][Ee][Tt]*=*:*[Aa][Pp][Ii]_[Kk][Ee][Yy]*=*:*--[Pp][Aa][Ss][Ss]*'
 HISTSIZE=1000 HISTFILESIZE=2000

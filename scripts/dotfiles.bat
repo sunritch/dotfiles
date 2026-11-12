@@ -1,24 +1,32 @@
 @echo off
-setlocal EnableExtensions
+setlocal EnableExtensions DisableDelayedExpansion
+
+if "%~2" NEQ "" goto :usage
+if /i "%~1"=="install" (set "ACT=link") else if /i "%~1"=="remove" (set "ACT=unlink") else goto :usage
 
 set "REPO=%DOTFILES_REPO%"
 if not defined REPO for %%I in ("%~dp0..") do set "REPO=%%~fI"
+for %%I in ("%REPO%") do set "REPO=%%~fI"
 
 if not exist "%REPO%\.git" goto :norepo
 
 set "RC=0"
 
-call :link ".emacs.d\init.el"   "%USERPROFILE%\.emacs.d\init.el"
-call :link ".emacs.d\site-lisp" "%USERPROFILE%\.emacs.d\site-lisp"
-call :link ".config\nvim"       "%LOCALAPPDATA%\nvim"
-call :link ".config\alacritty"  "%APPDATA%\alacritty"
-call :link ".config\wezterm"    "%USERPROFILE%\.config\wezterm"
-call :link ".vimrc"             "%USERPROFILE%\.vimrc"
+call :%ACT% ".emacs.d\init.el"   "%APPDATA%\.emacs.d\init.el"
+call :%ACT% ".emacs.d\site-lisp" "%APPDATA%\.emacs.d\site-lisp"
+call :%ACT% ".config\nvim"       "%LOCALAPPDATA%\nvim"
+call :%ACT% ".config\alacritty"  "%APPDATA%\alacritty"
+call :%ACT% ".config\wezterm"    "%USERPROFILE%\.config\wezterm"
+call :%ACT% ".vimrc"             "%USERPROFILE%\_vimrc"
 
 exit /b %RC%
 
+:usage
+>&2 echo Usage: %~nx0 install^|remove
+exit /b 2
+
 :norepo
->&2 echo ERROR: not a Git repository: "%REPO%"
+>&2 echo ERROR: Not a Git repository: "%REPO%"
 exit /b 1
 
 :link
@@ -27,23 +35,26 @@ set "DST=%~2"
 
 if not exist "%SRC%" goto :nosrc
 
-rem Do not overwrite existing files, directories, or links
-if exist "%DST%" goto :exists
+call :target "%DST%"
+if defined TARGET goto :check
+if exist "%DST%" goto :conflict
 
-rem Create the destination parent directory if necessary
-for %%I in ("%DST%") do set "PARENT=%%~dpI"
-if not exist "%PARENT%" mkdir "%PARENT%" 2>nul
-if not exist "%PARENT%" goto :faildir
+if not exist "%~dp2" mkdir "%~dp2" 2>nul
 
-rem Use a directory symlink for directory sources
-set "OPT="
-if exist "%SRC%\." set "OPT=/D"
-
-rem Keep mklink error messages visible
-mklink %OPT% "%DST%" "%SRC%" >nul
+if exist "%SRC%\." (mklink /D "%DST%" "%SRC%" >nul) else (mklink "%DST%" "%SRC%" >nul)
 if errorlevel 1 goto :fail
 
 echo LINKED          %DST%
+exit /b 0
+
+:check
+if /i "%TARGET%"=="%SRC%" goto :ok
+goto :conflict
+
+:target
+set "TARGET="
+for /f "tokens=1* delims=[" %%A in ('dir /AL "%~dp1" 2^>nul ^| findstr /I /L /C:" %~nx1 ["') do set "TARGET=%%B"
+if defined TARGET set "TARGET=%TARGET:~0,-1%"
 exit /b 0
 
 :nosrc
@@ -51,16 +62,39 @@ exit /b 0
 set "RC=1"
 exit /b 0
 
-:exists
-echo SKIPPED         %DST%
-exit /b 0
-
-:faildir
->&2 echo FAILED-DIR    "%PARENT%"
+:conflict
+>&2 echo CONFLICT       "%DST%"
 set "RC=1"
 exit /b 0
 
 :fail
->&2 echo FAILED-LINK   "%DST%"
+>&2 echo FAILED-LINK    "%DST%"
+set "RC=1"
+exit /b 0
+
+:ok
+echo OK              %DST%
+exit /b 0
+
+:unlink
+set "SRC=%REPO%\%~1"
+set "DST=%~2"
+
+call :target "%DST%"
+if not defined TARGET goto :skip
+if /i not "%TARGET%"=="%SRC%" goto :skip
+
+if exist "%DST%\." (rmdir "%DST%") else (del /q "%DST%")
+if errorlevel 1 goto :unfail
+
+echo UNLINKED        %DST%
+exit /b 0
+
+:skip
+echo SKIPPED         %DST%
+exit /b 0
+
+:unfail
+>&2 echo FAILED-UNLINK "%DST%"
 set "RC=1"
 exit /b 0

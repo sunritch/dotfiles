@@ -14,7 +14,6 @@
 [fetch]
 	prune = true
 [transfer]
-	fsckObjects = true
 	credentialsInUrl = die
 [url "https://github.com/"]
 	insteadOf = git://github.com/
@@ -22,8 +21,6 @@
 	conflictStyle = zdiff3
 [diff]
 	algorithm = histogram
-	colorMoved = plain
-	mnemonicPrefix = true
 [rebase]
 	autoStash = true
 [rerere]

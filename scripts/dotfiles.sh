@@ -12,7 +12,6 @@ FILES='
 .config/alacritty
 .config/wezterm
 .config/xmonad
-.ssh/config
 .vimrc
 .profile
 .bash_profile
