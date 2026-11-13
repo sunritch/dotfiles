@@ -44,10 +44,6 @@
                     :family "juliamono")
 
 (add-to-list 'load-path (expand-file-name "site-lisp" user-emacs-directory))
-;; Avoid placing large files in `site-lisp` to prevent slow startup.
-(let ((default-directory
-       (expand-file-name "site-lisp" user-emacs-directory)))
-  (normal-top-level-add-subdirs-to-load-path))
 
 ;;; package
 (require 'package)
@@ -61,16 +57,25 @@
   (let (refreshed)
     (dolist (p packages)
       (unless (package-installed-p p)
-        (unless refreshed
-          (package-refresh-contents)
-          (setq refreshed t))
-        (package-install p)))))
+        (condition-case err
+            (progn (unless refreshed (setq refreshed t) (package-refresh-contents))
+                   (package-install p))
+          (error (message "ensure-installed: %s: %s" p (error-message-string err))))))))
 
-(ensure-installed 'magit 'paredit  'envrc
+(ensure-installed 'magit 'paredit 'envrc
                   'sly                          ;; Common Lisp
-                  'haskell-mode                 ;; Haskell
                   'racket-mode 'geiser-chez     ;; Scheme
+                  'rustic                       ;; Rust
+                  'haskell-mode                 ;; Haskell
                   )
+
+;;; ispell/flyspell
+(with-eval-after-load 'ispell
+  (setq ispell-program-name (or (executable-find "aspell") (executable-find "hunspell")
+                                ispell-program-name)
+        ispell-dictionary "en_US"))
+(global-set-key (kbd "C-c s t") #'flyspell-mode)
+(global-set-key (kbd "C-c s p") #'flyspell-prog-mode)
 
 ;;; envrc
 (add-hook 'after-init-hook #'envrc-global-mode)
@@ -120,13 +125,13 @@
               (when path
                 (push `(,(car spec) (,path ,@(cddr spec))) impls))))
           (nreverse impls))))
-;; Don't turn on paredit in REPL, but at least use electric-pair-mode
+;; Don't turn on paredit in REPL
 (add-hook 'sly-mrepl-mode-hook 'electric-pair-local-mode)
 (add-hook 'lisp-mode-hook 'sly-mode)
 (add-to-list 'auto-mode-alist '("\\.cl\\'" . lisp-mode))
 
 ;;; OCaml (opam install utop merlin tuareg)
-;; Switch projects outside Emacs using direnv, then restart Emacs.
+;; Switch projects outside Emacs using direnv, then restart Emacs
 (let* ((prefix (getenv "OPAM_SWITCH_PREFIX"))
        (share (if prefix
                   (expand-file-name "share" prefix)
@@ -136,21 +141,22 @@
     (add-to-list 'load-path site-lisp)))
 
 (autoload 'tuareg-mode "tuareg" nil t)
+(add-to-list 'auto-mode-alist '("\\.ml[ily]?\\'" . tuareg-mode))
 
-;; Optional tools from opam.
+;; Optional tools from opam
 (dolist (spec '(("merlin" . merlin-mode)
                 ("utop" . utop-minor-mode)))
   (when (locate-library (car spec))
-    (autoload (cdr spec) (car spec) nil t)))
+    (autoload (cdr spec) (car spec) nil t)
+    (add-hook 'tuareg-mode-hook (cdr spec) t)))
 
-(defun ocaml-setup ()
-  (when (fboundp 'merlin-mode)
-    (merlin-mode 1))
-  (when (fboundp 'utop-minor-mode)
-    (utop-minor-mode 1)))
+(when (locate-library "ocamlformat")
+  (autoload 'ocamlformat "ocamlformat" nil t)
+  (autoload 'ocamlformat-before-save "ocamlformat" nil t)
+  (add-hook 'tuareg-mode-hook
+            (lambda () (when (string-match-p "\\.mli?\\'" (or buffer-file-name ""))
+                         (add-hook 'before-save-hook #'ocamlformat-before-save nil t)))))
 
-(add-hook 'tuareg-mode-hook #'ocaml-setup)
-(add-to-list 'auto-mode-alist '("\\.ml[ily]?\\'" . tuareg-mode))
 
 ;;; haskell
 (autoload 'haskell-mode "haskell-mode" "Haskell mode." t)
@@ -160,6 +166,13 @@
 (with-eval-after-load 'haskell-mode
   (setq haskell-process-suggest-remove-import-lines t
         haskell-process-auto-import-loaded-modules t))
+
+;;; rust
+;; rustic would otherwise start lsp-mode on every .rs buffer (rustic-lsp-setup-p).
+(setq rustic-lsp-client 'eglot rustic-lsp-setup-p nil)
+(autoload 'rustic-mode "rustic" "Rustic mode." t)
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rustic-mode))
+(with-eval-after-load 'eglot (setq eglot-autoshutdown t))
 
 ;;; agda
 (defun load-agda2-mode ()
@@ -175,19 +188,19 @@
 (add-to-list 'auto-mode-alist '("\\.l?agda\\'" . load-agda2-mode))
 
 ;;; ------------- third-party -------------- ;;;
-;; cweb
+;; cweb https://github.com/ascherer/cweb
 (autoload 'cweb-mode "cweb" "CWEB mode." t)
 (add-to-list 'auto-mode-alist '("\\.w\\'" . cweb-mode))
 (add-to-list 'auto-mode-alist '("\\.ch\\'" . cweb-mode))
 
+
+;;;; Don't edit this !!!
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes nil)
- '(package-selected-packages
-   '(geiser-chez haskell-mode magit paredit racket-mode sly envrc)))
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

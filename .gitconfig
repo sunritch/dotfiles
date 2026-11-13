@@ -31,4 +31,3 @@
 	br = branch
 	ci = commit
 	co = checkout
-	sync-el = "!git submodule foreach --quiet 'case \"$sm_path\" in .emacs.d/site-lisp/*) git sparse-checkout set --no-cone \"*.el\" ;; esac'"

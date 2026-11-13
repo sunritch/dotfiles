@@ -1,9 +1,6 @@
 Xft.dpi: 96
-Xft.antialias: true
 Xft.rgba: rgb
-Xft.hinting: true
 Xft.hintstyle: hintslight
-Xft.autohint: false
 Xft.lcdfilter: lcddefault
 
 *foreground: #ebdbb2
@@ -45,8 +42,7 @@ XTerm.vt100.colorBD: #fabd2f
 XTerm.vt100.colorULMode: true
 XTerm.vt100.colorUL: #83a598
 
-XTerm.vt100.faceName: monospace:size=14:antialias=true
-XTerm.vt100.boldFont: monospace:bold:size=14
+XTerm.vt100.faceName: monospace:size=14
 XTerm.vt100.faceNameDoublesize: unifont
 
 XTerm.vt100.translations: #override \n\
@@ -59,15 +55,10 @@ XTerm.vt100.bellIsUrgent: true
 URxvt.termName: rxvt-unicode-256color
 URxvt.iso14755: false
 URxvt.iso14755_52: false
-URxvt.locale: true
 URxvt.inputMethod: fcitx
-URxvt.imLocale: zh_CN.UTF-8
 URxvt.preeditType: Root
 ! URxvt.imFont: ...
 URxvt.font: xft:monospace:pixelsize=14, xft:Symbols Nerd Font Mono:pixelsize=14, xft:JuliaMono:pixelsize=14, xft:fairfaxhd:pixelsize=14, xft:unifont:pixelsize=14
-URxvt.boldFont: xft:monospace:style=Bold:pixelsize=14, xft:JuliaMono:style=Bold:pixelsize=14, xft:fairfaxhd:pixelsize=14, xft:unifont:pixelsize=14
-URxvt.italicFont: xft:monospace:style=Italic:pixelsize=14, xft:JuliaMono:style=Italic:pixelsize=14, xft:fairfaxhd:pixelsize=14, xft:unifont:pixelsize=14
-URxvt.boldItalicFont: xft:monospace:style=Bold Italic:pixelsize=14, xft:JuliaMono:style=Bold Italic:pixelsize=14, xft:fairfaxhd:pixelsize=14, xft:unifont:pixelsize=14
 URxvt.letterSpace: 0
 URxvt.lineSpace: 1
 
@@ -82,10 +73,10 @@ URxvt.secondaryScroll: false
 URxvt.scrollstyle: rxvt
 
 ! Perl extensions
-URxvt.perl-ext-common: default,eval,matcher,tabbed,readline,confirm-paste,selection-to-clipboard,searchable-scrollback
+URxvt.perl-ext-common:default,tabbed,selection-to-clipboard
 
 ! URL matcher
-URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.url-launcher: xdg-open
 URxvt.matcher.pattern.1: \\bhttps?://[\\w\\-@;/?&=%.:#~+,]+[\\w\\-@/?&=%#~+]
 URxvt.matcher.button: 1
 URxvt.matcher.rend.0: Uline Bold fg4
