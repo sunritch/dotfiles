@@ -90,8 +90,8 @@ case $OSTYPE in
     alias ls='ls -G'
     ;;
 esac
-alias ll='ls -lh'
-alias la='ls -lAh'
+alias ll='ls -lAh'
+alias la='ls -lh'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias -- -='cd -'

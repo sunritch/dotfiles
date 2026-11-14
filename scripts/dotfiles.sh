@@ -10,8 +10,6 @@ FILES='
 .config/zsh
 .config/nvim
 .config/alacritty
-.config/wezterm
-.config/xmonad
 .ssh/config
 .vimrc
 .profile

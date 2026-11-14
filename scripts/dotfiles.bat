@@ -16,7 +16,7 @@ call :%ACT% ".emacs.d\init.el"   "%APPDATA%\.emacs.d\init.el"
 call :%ACT% ".emacs.d\site-lisp" "%APPDATA%\.emacs.d\site-lisp"
 call :%ACT% ".config\nvim"       "%LOCALAPPDATA%\nvim"
 call :%ACT% ".config\alacritty"  "%APPDATA%\alacritty"
-call :%ACT% ".config\wezterm"    "%USERPROFILE%\.config\wezterm"
+rem call :%ACT% ".config\wezterm"    "%USERPROFILE%\.config\wezterm"
 call :%ACT% ".vimrc"             "%USERPROFILE%\_vimrc"
 
 exit /b %RC%

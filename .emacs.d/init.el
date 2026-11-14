@@ -14,6 +14,7 @@
 (delete-selection-mode 1)
 (electric-pair-mode 1)
 (tool-bar-mode -1)
+(winner-mode 1)
 (fido-mode 1)
 (prefer-coding-system 'utf-8)
 (setq uniquify-buffer-name-style 'reverse
@@ -37,11 +38,36 @@
 (setq duplicate-line-final-position 1)
 (global-set-key (kbd "C-c d") #'duplicate-dwim)
 
+;;; ispell/flyspell
+(with-eval-after-load 'ispell
+  (setq ispell-program-name (or (executable-find "aspell") (executable-find "hunspell")
+                                ispell-program-name)
+        ispell-dictionary "en_US"))
+(global-set-key (kbd "C-c s t") #'flyspell-mode)
+(global-set-key (kbd "C-c s p") #'flyspell-prog-mode)
+
 (with-eval-after-load 'dired (require 'dired-x))
 (set-face-attribute 'default nil
                     :background (if (display-graphic-p) "grey15" nil)
                     :foreground (if (display-graphic-p) "wheat" nil)
                     :family "juliamono")
+
+;;; text mode :font include juliamono unifont fairfaxhd jigmo
+(add-hook 'text-mode-hook
+          (lambda ()
+            (face-remap-add-relative 'default :family "unifont" :height 140)))
+;; org
+(add-hook 'org-mode-hook
+          (lambda ()
+            (face-remap-add-relative 'org-block :family "juliamono")
+            (face-remap-add-relative 'org-code :family "juliamono")
+            (face-remap-add-relative 'org-block-begin-line :family "juliamono")
+            (face-remap-add-relative 'org-block-end-line :family "juliamono")))
+;; markdown
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (face-remap-add-relative 'markdown-code-face :family "juliaMono")
+            (face-remap-add-relative 'markdown-inline-code-face :family "juliamono")))
 
 (add-to-list 'load-path (expand-file-name "site-lisp" user-emacs-directory))
 
@@ -52,6 +78,8 @@
              ;'("nongnu" . "https://elpa.nongnu.org/packages/")
              '("melpa" . "https://melpa.org/packages/"))
 ;(package-initialize)
+(setq package-archive-priorities '(("gnu"    . 40) ("nongnu" . 30)
+                                   ("org"    . 20) ("melpa"  . 10)))
 
 (defun ensure-installed (&rest packages)
   (let (refreshed)
@@ -65,17 +93,10 @@
 (ensure-installed 'magit 'paredit 'envrc
                   'sly                          ;; Common Lisp
                   'racket-mode 'geiser-chez     ;; Scheme
-                  'rustic                       ;; Rust
                   'haskell-mode                 ;; Haskell
+                  'rustic ;'rust-mode           ;; Rust
+                  'j-mode 'bqn-mode             ;; J, BQN
                   )
-
-;;; ispell/flyspell
-(with-eval-after-load 'ispell
-  (setq ispell-program-name (or (executable-find "aspell") (executable-find "hunspell")
-                                ispell-program-name)
-        ispell-dictionary "en_US"))
-(global-set-key (kbd "C-c s t") #'flyspell-mode)
-(global-set-key (kbd "C-c s p") #'flyspell-prog-mode)
 
 ;;; envrc
 (add-hook 'after-init-hook #'envrc-global-mode)
@@ -130,8 +151,8 @@
 (add-hook 'lisp-mode-hook 'sly-mode)
 (add-to-list 'auto-mode-alist '("\\.cl\\'" . lisp-mode))
 
-;;; OCaml (opam install utop merlin tuareg)
-;; Switch projects outside Emacs using direnv, then restart Emacs
+;;; ocaml (opam install utop merlin tuareg)
+;; switch projects outside emacs using direnv, then restart emacs
 (let* ((prefix (getenv "OPAM_SWITCH_PREFIX"))
        (share (if prefix
                   (expand-file-name "share" prefix)
@@ -143,7 +164,7 @@
 (autoload 'tuareg-mode "tuareg" nil t)
 (add-to-list 'auto-mode-alist '("\\.ml[ily]?\\'" . tuareg-mode))
 
-;; Optional tools from opam
+;; optional tools from opam
 (dolist (spec '(("merlin" . merlin-mode)
                 ("utop" . utop-minor-mode)))
   (when (locate-library (car spec))
@@ -168,11 +189,27 @@
         haskell-process-auto-import-loaded-modules t))
 
 ;;; rust
-;; rustic would otherwise start lsp-mode on every .rs buffer (rustic-lsp-setup-p).
+;; rustic would otherwise start lsp-mode on every .rs buffer (rustic-lsp-setup-p)
+;(autoload 'rust-mode "rust-mode" "Rust mode." t)
 (setq rustic-lsp-client 'eglot rustic-lsp-setup-p nil)
 (autoload 'rustic-mode "rustic" "Rustic mode." t)
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rustic-mode))
 (with-eval-after-load 'eglot (setq eglot-autoshutdown t))
+
+;;; j
+(with-eval-after-load 'j-console
+  (unless j-console-cmd
+    (catch 'found
+      (dolist (g '("~/j9*/jconsole.sh" "~/j9*/bin/jconsole" "/Applications/j9*/bin/jconsole"))
+        (dolist (f (reverse (file-expand-wildcards g t)))
+          (when (file-executable-p f) (throw 'found (setq j-console-cmd f))))))))
+
+;;; BQN (REPL: C-c C-z; glyphs: `\' prefix, `\\' = literal \)
+(with-eval-after-load 'bqn-mode
+  (keymap-set bqn-mode-map "C-c C-d" #'bqn-comint-send-dwim)
+  (keymap-set bqn-mode-map "C-c C-b" #'bqn-comint-send-buffer)
+  (keymap-set bqn-mode-map "C-c C-k" #'bqn-keymap-mode)
+  (keymap-set bqn-mode-map "C-c C-g" #'bqn-glyph-mode))
 
 ;;; agda
 (defun load-agda2-mode ()
@@ -194,12 +231,16 @@
 (add-to-list 'auto-mode-alist '("\\.ch\\'" . cweb-mode))
 
 
-;;;; Don't edit this !!!
+;;;;;;;;;;;;;;;;;;;;;;;
+;;; Don't edit this !!!
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(envrc geiser-chez geiser-guile haskell-mode magit paredit
+           racket-mode rustic sly))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
