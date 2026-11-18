@@ -1,0 +1,14 @@
+[scrolling]
+history = 20000
+
+[selection]
+save_to_clipboard = true
+
+[window]
+padding = {x = 4, y = 4}
+dynamic_padding = true
+
+[[keyboard.bindings]]
+key = "Enter"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
