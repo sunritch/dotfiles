@@ -6,7 +6,6 @@ REPO=${DOTFILES_REPO:-$HOME/dotfiles}
 
 FILES='
 .emacs.d/init.el
-.emacs.d/site-lisp
 .config/zsh
 .config/nvim
 .config/alacritty

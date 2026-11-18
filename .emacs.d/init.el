@@ -69,8 +69,6 @@
             (face-remap-add-relative 'markdown-code-face :family "juliaMono")
             (face-remap-add-relative 'markdown-inline-code-face :family "juliamono")))
 
-(add-to-list 'load-path (expand-file-name "site-lisp" user-emacs-directory))
-
 ;;; custom
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'noerror 'nomessage)
@@ -228,6 +226,8 @@
 
 ;;; ------------- third-party -------------- ;;;
 ;; cweb https://github.com/ascherer/cweb
-(autoload 'cweb-mode "cweb" "CWEB mode." t)
-(add-to-list 'auto-mode-alist '("\\.w\\'" . cweb-mode))
-(add-to-list 'auto-mode-alist '("\\.ch\\'" . cweb-mode))
+;; (add-to-list 'load-path (expand-file-name "site-lisp/cweb"
+;;                                           user-emacs-directory))
+;; (autoload 'cweb-mode "cweb" "CWEB mode." t)
+;; (add-to-list 'auto-mode-alist '("\\.w\\'" . cweb-mode))
+;; (add-to-list 'auto-mode-alist '("\\.ch\\'" . cweb-mode))

@@ -13,7 +13,7 @@ if not exist "%REPO%\.git" goto :norepo
 set "RC=0"
 
 call :%ACT% ".emacs.d\init.el"   "%APPDATA%\.emacs.d\init.el"
-call :%ACT% ".emacs.d\site-lisp" "%APPDATA%\.emacs.d\site-lisp"
+rem call :%ACT% ".emacs.d\site-lisp" "%APPDATA%\.emacs.d\site-lisp"
 call :%ACT% ".config\nvim"       "%LOCALAPPDATA%\nvim"
 call :%ACT% ".config\alacritty"  "%APPDATA%\alacritty"
 rem call :%ACT% ".config\wezterm"    "%USERPROFILE%\.config\wezterm"
