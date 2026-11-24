@@ -1,0 +1,18 @@
+shell -$SHELL
+defutf8 on
+encoding UTF-8
+term screen-256color
+defbce on
+#truecolor on
+
+defnonblock 5
+defscrollback 20000
+altscreen on
+defflow off
+mousetrack on
+#multiuser on
+activity "activity in %t"
+bell_msg "bell in %t"
+
+hardstatus alwayslastline
+hardstatus string '%H %= %?%-Lw%?[%n%f %t]%?%+Lw%? %= %l %Y-%m-%d %c'

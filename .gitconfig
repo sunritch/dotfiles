@@ -1,0 +1,33 @@
+[user]
+	email = 161911608+sunritch@users.noreply.github.com
+	name = sunritch
+[pull]
+	rebase = false
+[column]
+	ui = auto
+[core]
+	autocrlf = input
+[init]
+	defaultBranch = main
+[push]
+	autoSetupRemote = true
+[fetch]
+	prune = true
+[transfer]
+	credentialsInUrl = die
+[url "https://github.com/"]
+	insteadOf = git://github.com/
+[merge]
+	conflictStyle = zdiff3
+[diff]
+	algorithm = histogram
+[rebase]
+	autoStash = true
+[rerere]
+	enabled = true
+[alias]
+	st = status -sb
+	lg = log --graph --oneline --decorate
+	br = branch
+	ci = commit
+	co = checkout

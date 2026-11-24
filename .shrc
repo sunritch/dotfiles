@@ -1,0 +1,33 @@
+# ~/.shrc: interactive config for shells that read $ENV: sh and ksh etc
+
+HISTSIZE=5000
+HISTFILE="$HOME/.sh_history"
+
+set -o emacs 2>/dev/null
+# ksh88/ksh93 do not bind the arrow keys; this classic alias macro does
+if type print >/dev/null 2>&1; then
+    alias __A="$(print '\0020')" __B="$(print '\0016')" __C="$(print '\0006')" __D="$(print '\0002')"
+fi
+
+case $(uname -s) in
+    Linux|CYGWIN*|MSYS*) alias ls='ls --color=auto' grep='grep --color=auto' ;;
+    FreeBSD|DragonFly|Darwin) alias ls='ls -G' ;;
+esac
+alias ll='ls -alF' la='ls -A' l='ls -CF'
+alias ge=emacs 
+alias gen='emacs -nw' 
+alias nv=nvim
+
+# prompt: user@host and cwd
+_id=$(id)
+case $_id in uid=0*) _c='#' ;; *) _c='$' ;; esac
+_u=${_id#*\(}
+_u=${_u%%\)*}
+_h=$(uname -n)
+PS1="$_u@${_h%%.*} "'$PWD '"$_c "
+unset _id _c _u _h
+
+# opam
+#if [ -r "$HOME/.opam/opam-init/init.sh" ]; then
+#    . "$HOME/.opam/opam-init/init.sh" > /dev/null 2>&1
+#fi

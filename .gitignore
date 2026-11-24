@@ -1,0 +1,14 @@
+*~
+\#*\#
+.\#*
+.env
+.env.*
+*.pem
+*.key
+.netrc
+.authinfo*
+*.p12
+*.pfx
+*.kdbx
+.ssh/*
+!.ssh/config
